@@ -1,17 +1,19 @@
 package main
 
 import (
+	"MealMap/Config/Route"
 	"fmt"
-	"github.com/gin-gonic/gin"
+	"net/http"
 )
 
 func main()  {
 	fmt.Print("asdfsdf")
-	r := gin.Default()
-	r.GET("/ping", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "pong",
-		})
-	})
-	r.Run()
+	routeTable := Route.SetupRoute()
+
+	// Run
+	s := &http.Server{
+		Handler:        routeTable,
+		MaxHeaderBytes: 1 << 20,
+	}
+	_ = s.ListenAndServe()
 }
